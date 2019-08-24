@@ -122,6 +122,15 @@ def enableHermes = project.ext.react.get("enableHermes", false);
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
+    configurations.all {
+        resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+            def requested = details.requested
+            if (requested.group == 'com.android.support' && requested.name != 'multidex') {
+                details.useVersion "${rootProject.ext.supportLibVersion}"
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -131,6 +140,7 @@ android {
         applicationId "com.awesomeplaces"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+        missingDimensionStrategy "RNN.reactNativeVersion", "reactNative60" // See note below!
         versionCode 1
         versionName "1.0"
     }
@@ -139,7 +149,7 @@ android {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+            include /*"armeabi-v7a",*/ "x86", "arm64-v8a", "x86_64"
         }
     }
     signingConfigs {
@@ -190,6 +200,9 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation project(':react-native-navigation')
+    implementation 'com.android.support:design:27.1.0'
+    implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
 
     if (enableHermes) {
       def hermesPath = "../../node_modules/hermesvm/android/";
