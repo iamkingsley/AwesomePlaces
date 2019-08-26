@@ -9,7 +9,6 @@ MapboxGL.setAccessToken(
 
 class PickLocation extends Component {
   state = {
-    pointInView: [-73.970895, 40.723279],
     zoomLevel: 16,
   };
 
@@ -21,14 +20,24 @@ class PickLocation extends Component {
     MapboxGL.locationManager.dispose();
   }
 
+  onUserMarkerPress() {
+    Alert.alert('You pressed on the user location annotation');
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <MapboxGL.MapView ref={c => (this.map = c)} style={styles.map}>
+        <MapboxGL.MapView
+          ref={c => (this.map = c)}
+          showUserLocation={true}
+          zoomLevel={this.state.zoomLevel}
+          style={styles.map}>
           <MapboxGL.Camera
-            zoomLevel={this.state.zoomLevel}
-            centerCoordinate={this.state.pointInView}
+            followZoomLevel={this.state.zoomLevel}
+            followUserLocation={true}
+            followUserMode="normal"
           />
+          <MapboxGL.UserLocation onPress={this.onUserMarkerPress} />
         </MapboxGL.MapView>
       </View>
     );
