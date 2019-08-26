@@ -1,16 +1,35 @@
-import React, { Component } from "react";
-import { View, Image, Button, StyleSheet, Text } from "react-native";
+import React, {Component} from 'react';
+import {View, StyleSheet, Alert} from 'react-native';
+
+import MapboxGL from '@react-native-mapbox-gl/maps';
+
+MapboxGL.setAccessToken(
+  'pk.eyJ1IjoiYmNvZGpvZSIsImEiOiJjanpvb2pvaHMwNGFkM2JuemQwMTcwMm96In0.Y-MRpWsm2lHBVbXiLKkWnQ',
+);
 
 class PickLocation extends Component {
+  state = {
+    pointInView: [-73.970895, 40.723279],
+    zoomLevel: 16,
+  };
+
+  componentDidMount() {
+    MapboxGL.locationManager.start();
+  }
+
+  componentWillUnmount() {
+    MapboxGL.locationManager.dispose();
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.placeholder}>
-          <Text>Map</Text>
-        </View>
-        <View style={styles.button}>
-          <Button title="Locate Me" onPress={() => alert('Pick Location!')} />
-        </View>
+        <MapboxGL.MapView ref={c => (this.map = c)} style={styles.map}>
+          <MapboxGL.Camera
+            zoomLevel={this.state.zoomLevel}
+            centerCoordinate={this.state.pointInView}
+          />
+        </MapboxGL.MapView>
       </View>
     );
   }
@@ -18,19 +37,16 @@ class PickLocation extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
-    alignItems: "center"
+    width: '100%',
+    alignItems: 'center',
   },
-  placeholder: {
-    borderWidth: 1,
-    borderColor: "black",
-    backgroundColor: "#eee",
-    width: "80%",
-    height: 150
+  map: {
+    width: '100%',
+    height: 250,
   },
   button: {
-    margin: 8
-  }
+    margin: 8,
+  },
 });
 
 export default PickLocation;
