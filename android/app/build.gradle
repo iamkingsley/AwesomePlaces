@@ -203,6 +203,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-navigation')
     implementation project(':@react-native-mapbox-gl_maps')
+    implementation project(':@react-native-community_geolocation')
     implementation 'com.android.support:design:27.1.0'
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
 

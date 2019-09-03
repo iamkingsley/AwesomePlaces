@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {View, StyleSheet, Alert, PermissionsAndroid, Platform } from 'react-native';
+import {View, StyleSheet, Alert, Platform} from 'react-native';
 
 import MapboxGL from '@react-native-mapbox-gl/maps';
+import Geolocation from '@react-native-community/geolocation';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoiYmNvZGpvZSIsImEiOiJjanpvb2pvaHMwNGFkM2JuemQwMTcwMm96In0.Y-MRpWsm2lHBVbXiLKkWnQ',
@@ -9,20 +10,13 @@ MapboxGL.setAccessToken(
 
 class PickLocation extends Component {
   state = {
+    centerCoordinate: [-115.1398296, 36.1699412],
     zoomLevel: 16,
   };
 
   componentDidMount() {
     if (Platform.OS === 'android') {
-      MapboxGL.requestAndroidLocationPermissions()
-        .then((ok) => {
-          if (ok) {
-            MapboxGL.locationManager.start()
-          }
-        },(err) => {
-          this.requestLocationPermission();
-        }
-      );
+      MapboxGL.requestAndroidLocationPermissions();
     }
   }
 
@@ -34,26 +28,15 @@ class PickLocation extends Component {
     Alert.alert('You pressed on the user location annotation');
   }
 
-  requestLocationPermission() {
-    try {
-      const granted = PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          'title': 'AwesomePlaces Location Permission',
-          'message': 'AwesomePlaces wants to access to your location',
-          buttonNeutral: 'Ask Me Later',
-          buttonNegative: 'Cancel',
-          buttonPositive: 'OK',
-        }
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        alert("You can use the location");
-      } else {
-        alert("Location permission denied");
-      }
-    } catch (err) {
-      console.warn(err)
-    }
+  getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(pos => {
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          centerCoordinate: [pos.coords.longitude, pos.coords.latitude],
+        };
+      });
+    });
   };
 
   render() {
@@ -61,15 +44,14 @@ class PickLocation extends Component {
       <View style={styles.container}>
         <MapboxGL.MapView
           ref={c => (this.map = c)}
+          onPress={this.getCurrentLocation}
           zoomLevel={this.state.zoomLevel}
           style={styles.map}>
-          
           <MapboxGL.Camera
-            followZoomLevel={this.state.zoomLevel}
-            followUserLocation={true}
-            followUserMode="normal"
-            pitch={1}
-            followPitch={this.state.zoomLevel}
+            zoomLevel={this.state.zoomLevel}
+            // followUserLocation={true}
+            // followUserMode="normal"
+            centerCoordinate={this.state.centerCoordinate}
           />
           <MapboxGL.UserLocation onPress={this.onUserMarkerPress} />
         </MapboxGL.MapView>

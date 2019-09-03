@@ -17,6 +17,7 @@ import com.reactnativenavigation.react.ReactGateway;
 
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.mapbox.rctmgl.RCTMGLPackage;
+import com.reactnativecommunity.geolocation.GeolocationPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,7 +45,8 @@ public class MainApplication extends NavigationApplication {
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
             new VectorIconsPackage(),
-            new RCTMGLPackage()
+            new RCTMGLPackage(),
+            new GeolocationPackage()
         );
     }
   
