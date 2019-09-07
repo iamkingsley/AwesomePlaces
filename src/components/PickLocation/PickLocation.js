@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import {StyleSheet, Platform } from "react-native";
+import {View, Button, StyleSheet, Platform } from "react-native";
 import MapboxGL from '@react-native-mapbox-gl/maps';
+
+import Geolocation from '@react-native-community/geolocation';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoiYmNvZGpvZSIsImEiOiJjanpvb2pvaHMwNGFkM2JuemQwMTcwMm96In0.Y-MRpWsm2lHBVbXiLKkWnQ',
@@ -24,19 +26,39 @@ class PickLocation extends Component {
   
   componentWillUnmount() {
     MapboxGL.locationManager.dispose();
+    Geolocation.stopObserving();
   }
   
+  handleMapPressed = () => {
+    Geolocation.getCurrentPosition(position => {
+      const coords = position.coords;
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          pointInView: [coords.longitude, coords.latitude]
+        }
+      })
+    })
+  }
+
   render() {
     return (
-      <MapboxGL.MapView 
-        ref={c => (this.map = c)} 
-        style={styles.map}
-        >
-       <MapboxGL.Camera
-         zoomLevel={this.state.zoomLevel}
-         centerCoordinate={this.state.pointInView}
-       />
-      </MapboxGL.MapView>
+      <View style={styles.container}>
+        <MapboxGL.MapView 
+          ref={c => (this.map = c)} 
+          style={styles.map}
+          >
+        <MapboxGL.Camera
+          zoomLevel={this.state.zoomLevel}
+          animationMode={'flyTo'}
+          animationDuration={3000}
+          centerCoordinate={this.state.pointInView}
+        />
+        </MapboxGL.MapView>
+        <View style={styles.button}>
+         <Button title="Locate Me" onPress={this.handleMapPressed} />
+        </View>
+      </View>
     );
   }
 }
