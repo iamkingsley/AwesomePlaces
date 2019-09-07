@@ -32,6 +32,7 @@ class PickImage extends Component {
             pickedImage: {uri: response.uri},
           };
         });
+        this.props.onImagePicked(this.state.pickedImage);
       }
     });
   };
