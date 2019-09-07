@@ -22,6 +22,16 @@ class PickLocation extends Component {
         }
       );
     }
+
+    Geolocation.watchPosition(position => {
+      const coords = position.coords;
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          pointInView: [coords.longitude, coords.latitude]
+        }
+      })
+    });
   }
   
   componentWillUnmount() {
