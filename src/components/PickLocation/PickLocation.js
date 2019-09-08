@@ -47,7 +47,8 @@ class PickLocation extends Component {
           ...prevState,
           pointInView: [coords.longitude, coords.latitude]
         }
-      })
+      });
+      this.props.onLocationPicked([coords.longitude, coords.latitude]);
     })
   }
 
