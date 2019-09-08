@@ -13,6 +13,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 
 import com.imagepicker.ImagePickerPackage;
+import com.reactnativecommunity.geolocation.GeolocationPackage;
+import com.mapbox.rctmgl.RCTMGLPackage;
 
 import com.reactnativenavigation.NavigationApplication;
 import com.reactnativenavigation.react.NavigationReactNativeHost;
@@ -44,7 +46,9 @@ public class MainApplication extends NavigationApplication {
         // No need to add RnnPackage and MainReactPackage
         return Arrays.<ReactPackage>asList(
             new VectorIconsPackage(),
-            new ImagePickerPackage()
+            new ImagePickerPackage(),
+            new RCTMGLPackage(),
+            new GeolocationPackage()
         );
     }
   
