@@ -1,5 +1,13 @@
-import React, { Component } from 'react';
-import { View, Image, Button, StyleSheet } from 'react-native';
+import React, {Component} from 'react';
+import {
+  View,
+  StyleSheet,
+  ImageBackground,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
+
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import imagePlaceholder from '../../assets/beautiful-place.jpg';
 import ImagePicker from 'react-native-image-picker';
@@ -12,13 +20,14 @@ class PickImage extends Component {
     pickedImage: imagePlaceholder,
     options: {
       title: 'Pick an Image',
-       storageOptions: { // storageOptions is Optional
-         skipBackup: true,
-         path: 'images',
-       },
-     },
+      storageOptions: {
+        // storageOptions is Optional
+        skipBackup: true,
+        path: 'images',
+      },
+    },
   };
-    
+
   pickImageHandler = () => {
     ImagePicker.showImagePicker(this.state.options, response => {
       if (response.didCancel) {
@@ -39,37 +48,34 @@ class PickImage extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <View style={styles.placeholder}>
-          <Image source={this.state.pickedImage} style={styles.previewImage} />
-        </View>
-        <View style={styles.button}>
-          <Button title='Pick Image' onPress={this.pickImageHandler} />
-        </View>
-      </View>
+      <ImageBackground
+        source={this.state.pickedImage}
+        style={styles.backgroundImage}>
+        <TouchableOpacity onPress={this.pickImageHandler}>
+          <View style={styles.button}>
+            <Icon
+              size={50}
+              name={Platform.OS === 'android' ? 'md-camera' : 'ios-camera'}
+              color="#aaa"
+            />
+          </View>
+        </TouchableOpacity>
+      </ImageBackground>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        width: '100%',
-        alignItems: 'center'
-    },
-    placeholder: {
-      borderWidth: 1,
-      borderColor: 'black',
-      backgroundColor: '#eee',
-      width: '80%',
-      height: 150
-    },
-    button: {
-      margin: 8
-    },
-    previewImage: {
-        width: '100%',
-        height: '100%'
-    }
-  });
+  backgroundImage: {
+    width: '100%',
+    height: 200,
+  },
+  button: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    paddingRight: '3%',
+  },
+});
 
 export default PickImage;
