@@ -20,8 +20,8 @@ class PickImage extends Component {
     pickedImage: imagePlaceholder,
     options: {
       title: 'Pick an Image',
+      // storageOptions is Optional
       storageOptions: {
-        // storageOptions is Optional
         skipBackup: true,
         path: 'images',
       },
