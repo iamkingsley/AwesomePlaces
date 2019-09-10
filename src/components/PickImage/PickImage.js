@@ -5,6 +5,7 @@ import {
   ImageBackground,
   Platform,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -31,9 +32,9 @@ class PickImage extends Component {
   pickImageHandler = () => {
     ImagePicker.showImagePicker(this.state.options, response => {
       if (response.didCancel) {
-        alert('User cancelled!');
+        Alert.alert('User cancelled!');
       } else if (response.error) {
-        alert('Error: ', response.error);
+        Alert.alert('Error: ', response.error);
       } else {
         this.setState(prevState => {
           return {

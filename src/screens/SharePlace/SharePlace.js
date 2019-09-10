@@ -1,14 +1,9 @@
-import React, { Component } from 'react';
-import {
-  View,
-  Button,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
-import { connect } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
+import React, {Component} from 'react';
+import {View, Button, StyleSheet, ScrollView} from 'react-native';
+import {connect} from 'react-redux';
+import {Navigation} from 'react-native-navigation';
 
-import { addPlace } from '../../store/actions/index';
+import {addPlace} from '../../store/actions/index';
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import MainText from '../../components/UI/MainText/MainText';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
@@ -24,18 +19,18 @@ class SharePlaceScreen extends Component {
         valid: false,
         touched: false,
         validationRules: {
-          notEmpty: true
-        }
+          notEmpty: true,
+        },
       },
       location: {
         value: null,
-        valid: false
+        valid: false,
       },
       image: {
         value: null,
-        valid: false
-      }
-    }
+        valid: false,
+      },
+    },
   };
 
   constructor(props) {
@@ -43,15 +38,15 @@ class SharePlaceScreen extends Component {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
 
-  navigationButtonPressed = ({ buttonId }) => {
+  navigationButtonPressed = ({buttonId}) => {
     Navigation.mergeOptions('sideMenu', {
       sideMenu: {
         left: {
-          visible: true
-        }
-      }
+          visible: true,
+        },
+      },
     });
-  }
+  };
 
   placeNameChangedHandler = val => {
     this.setState(prevState => {
@@ -62,9 +57,9 @@ class SharePlaceScreen extends Component {
             ...prevState.controls.placeName,
             value: val,
             valid: validate(val, prevState.controls.placeName.validationRules),
-            touched: true
-          }
-        }
+            touched: true,
+          },
+        },
       };
     });
   };
@@ -76,9 +71,9 @@ class SharePlaceScreen extends Component {
           ...prevState.controls,
           location: {
             value: location,
-            valid: true
-          }
-        }
+            valid: true,
+          },
+        },
       };
     });
   };
@@ -90,9 +85,9 @@ class SharePlaceScreen extends Component {
           ...prevState.controls,
           image: {
             value: image,
-            valid: true
-          }
-        }
+            valid: true,
+          },
+        },
       };
     });
   };
@@ -120,7 +115,7 @@ class SharePlaceScreen extends Component {
           />
           <View style={styles.button}>
             <Button
-              title='Share the Place!'
+              title="Share the Place!"
               onPress={this.placeAddedHandler}
               disabled={
                 !this.state.controls.placeName.valid ||
@@ -138,28 +133,32 @@ class SharePlaceScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   placeholder: {
     borderWidth: 1,
     borderColor: 'black',
     backgroundColor: '#eee',
     width: '80%',
-    height: 150
+    height: 150,
   },
   button: {
-    margin: 8
+    margin: 8,
   },
   previewImage: {
     width: '100%',
-    height: '100%'
-  }
+    height: '100%',
+  },
 });
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAddPlace: (placeName, location, image) => dispatch(addPlace(placeName, location, image))
+    onAddPlace: (placeName, location, image) =>
+      dispatch(addPlace(placeName, location, image)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(SharePlaceScreen);
+export default connect(
+  null,
+  mapDispatchToProps,
+)(SharePlaceScreen);

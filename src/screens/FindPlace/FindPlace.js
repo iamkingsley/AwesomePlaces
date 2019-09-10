@@ -1,44 +1,37 @@
-import { Navigation } from "react-native-navigation";
+import {Navigation} from 'react-native-navigation';
 
-import React, { Component } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated
-} from "react-native";
-import { connect } from "react-redux";
+import React, {Component} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, Animated} from 'react-native';
+import {connect} from 'react-redux';
 
-import PlaceList from "../../components/PlaceList/PlaceList";
+import PlaceList from '../../components/PlaceList/PlaceList';
 
 class FindPlaceScreen extends Component {
-
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
 
-  navigationButtonPressed = ({ buttonId }) => {
+  navigationButtonPressed = ({buttonId}) => {
     Navigation.mergeOptions('sideMenu', {
       sideMenu: {
         left: {
-          visible: true
-        }
-      }
+          visible: true,
+        },
+      },
     });
-  }
-  
+  };
+
   state = {
     placesLoaded: false,
     removeAnim: new Animated.Value(1),
-    placesAnim: new Animated.Value(0)
+    placesAnim: new Animated.Value(0),
   };
 
   placesLoadedHandler = () => {
     Animated.timing(this.state.placesAnim, {
       toValue: 1,
       duration: 500,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
   };
 
@@ -46,10 +39,10 @@ class FindPlaceScreen extends Component {
     Animated.timing(this.state.removeAnim, {
       toValue: 0,
       duration: 500,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start(() => {
       this.setState({
-        placesLoaded: true
+        placesLoaded: true,
       });
       this.placesLoadedHandler();
     });
@@ -59,21 +52,21 @@ class FindPlaceScreen extends Component {
     const selPlace = this.props.places.find(place => {
       return place.key === key;
     });
-    
+
     Navigation.push(this.props.componentId, {
       component: {
-        name: "awesome-places.PlaceDetailScreen",
+        name: 'awesome-places.PlaceDetailScreen',
         passProps: {
-          selectPlace: selPlace
+          selectPlace: selPlace,
         },
         options: {
           topBar: {
             title: {
-              text: selPlace.name
-            }
-          }
-        }
-      }
+              text: selPlace.name,
+            },
+          },
+        },
+      },
     });
   };
 
@@ -86,12 +79,11 @@ class FindPlaceScreen extends Component {
             {
               scale: this.state.removeAnim.interpolate({
                 inputRange: [0, 1],
-                outputRange: [12, 1]
-              })
-            }
-          ]
-        }}
-      >
+                outputRange: [12, 1],
+              }),
+            },
+          ],
+        }}>
         <TouchableOpacity onPress={this.placesSearchHandler}>
           <View style={styles.searchButton}>
             <Text style={styles.searchButtonText}>Find Places</Text>
@@ -103,9 +95,8 @@ class FindPlaceScreen extends Component {
       content = (
         <Animated.View
           style={{
-            opacity: this.state.placesAnim
-          }}
-        >
+            opacity: this.state.placesAnim,
+          }}>
           <PlaceList
             places={this.props.places}
             onItemSelected={this.itemSelectedHandler}
@@ -124,25 +115,25 @@ class FindPlaceScreen extends Component {
 const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   searchButton: {
-    borderColor: "orange",
+    borderColor: 'orange',
     borderWidth: 3,
     borderRadius: 50,
-    padding: 20
+    padding: 20,
   },
   searchButtonText: {
-    color: "orange",
-    fontWeight: "bold",
-    fontSize: 26
-  }
+    color: 'orange',
+    fontWeight: 'bold',
+    fontSize: 26,
+  },
 });
 
 const mapStateToProps = state => {
   return {
-    places: state.places.places
+    places: state.places.places,
   };
 };
 

@@ -1,33 +1,32 @@
-import React, { Component } from "react";
+import React, {Component} from 'react';
 import {
   View,
   Text,
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Platform
-} from "react-native";
+  Platform,
+} from 'react-native';
 
-import Icon from "react-native-vector-icons/Ionicons";
-import goToAuthScreen from "../GoToAuthScreen/goToAuthScreen";
+import Icon from 'react-native-vector-icons/Ionicons';
+import goToAuthScreen from '../GoToAuthScreen/goToAuthScreen';
 
 class SideDrawer extends Component {
   onSignOut = () => {
     goToAuthScreen();
-  }
+  };
 
   render() {
     return (
       <View
         style={[
           styles.container,
-          { width: Dimensions.get("window").width * 0.8 }
-        ]}
-      >
+          {width: Dimensions.get('window').width * 0.8},
+        ]}>
         <TouchableOpacity onPress={this.onSignOut}>
           <View style={styles.drawerItem}>
             <Icon
-              name={Platform .OS === "android" ? "md-log-out" : "ios-log-out"}
+              name={Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'}
               size={30}
               color="#aaa"
               style={styles.drawerItemIcon}
@@ -43,18 +42,18 @@ class SideDrawer extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
-    backgroundColor: "white",
-    flex: 1
+    backgroundColor: 'white',
+    flex: 1,
   },
   drawerItem: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
-    backgroundColor: "#eee"
+    backgroundColor: '#eee',
   },
   drawerItemIcon: {
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 });
 
 export default SideDrawer;
