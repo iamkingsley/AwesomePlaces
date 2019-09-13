@@ -12,13 +12,17 @@ class FindPlaceScreen extends Component {
   }
 
   navigationButtonPressed = ({buttonId}) => {
-    Navigation.mergeOptions('sideMenu', {
-      sideMenu: {
-        left: {
-          visible: true,
+    const {componentId} = this.props;
+
+    if (buttonId === 'sideMenu') {
+      Navigation.mergeOptions(componentId, {
+        sideMenu: {
+          left: {
+            visible: true,
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   state = {
