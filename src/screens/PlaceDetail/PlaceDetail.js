@@ -15,9 +15,15 @@ import {deletePlace} from '../../store/actions/index';
 import {Navigation} from 'react-native-navigation';
 
 class PlaceDetail extends Component {
-  placeDeletedHandler = () => {
-    this.props.onDeletePlace(this.props.selectPlace.key);
-    Navigation.pop(this.props.componentId);
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  navigationButtonPressed = ({buttonId}) => {
+    if (buttonId === 'delete') {
+      this.props.onDeletePlace(this.props.selectPlace.key);
+      Navigation.pop(this.props.componentId);
+    }
   };
 
   render() {
@@ -30,17 +36,6 @@ class PlaceDetail extends Component {
           />
           <Text style={styles.placeName}>{this.props.selectPlace.name}</Text>
         </View>
-        <View>
-          <TouchableOpacity onPress={this.placeDeletedHandler}>
-            <View style={styles.deleteButton}>
-              <Icon
-                size={30}
-                name={Platform.OS === 'android' ? 'md-trash' : 'ios-trash'}
-                color="red"
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
@@ -48,7 +43,7 @@ class PlaceDetail extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    margin: 22,
+    margin: 10,
   },
   placeImage: {
     width: '100%',

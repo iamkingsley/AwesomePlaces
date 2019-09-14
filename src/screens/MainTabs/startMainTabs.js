@@ -59,28 +59,6 @@ const startTabs = () => {
                                     ],
                                   },
                                 },
-                                stack: {
-                                  children: [
-                                    {
-                                      component: {
-                                        id: 'awesome-places.PlaceDetailScreen',
-                                        name:
-                                          'awesome-places.PlaceDetailScreen',
-                                        options: {
-                                          // bottomTab: {
-                                          //     text: 'Place Name',
-                                          //     icon: sources[0]
-                                          // },
-                                          topBar: {
-                                            title: {
-                                              text: 'Place Name',
-                                            },
-                                          },
-                                        },
-                                      },
-                                    },
-                                  ],
-                                },
                               },
                             },
                           ],
