@@ -1,23 +1,24 @@
 import {Platform} from 'react-native';
 import {Navigation} from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Colors from '../../constants/Colors';
 
 const startTabs = () => {
   Promise.all([
     Icon.getImageSource(
       Platform.OS === 'android' ? 'md-search' : 'ios-search',
-      30,
-      '#428bca',
+      25,
+      Colors.primary,
     ),
     Icon.getImageSource(
       Platform.OS === 'android' ? 'md-share-alt' : 'ios-share-alt',
-      30,
-      '#428bca',
+      25,
+      Colors.primary,
     ),
     Icon.getImageSource(
       Platform.OS === 'android' ? 'md-menu' : 'ios-menu',
-      30,
-      '#428bca',
+      25,
+      'white',
     ),
   ]).then(sources => {
     Navigation.setRoot({
@@ -93,11 +94,6 @@ const startTabs = () => {
                         },
                       },
                     ],
-                    options: {
-                      topBar: {
-                        visible: false,
-                      },
-                    },
                   },
                 },
               ],

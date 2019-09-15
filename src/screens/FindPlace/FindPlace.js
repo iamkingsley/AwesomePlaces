@@ -68,8 +68,8 @@ class FindPlaceScreen extends Component {
     Promise.all([
       Icon.getImageSource(
         Platform.OS === 'android' ? 'md-trash' : 'ios-trash',
-        30,
-        'red',
+        25,
+        'white',
       ),
     ]).then(icon => {
       Navigation.push(this.props.componentId, {
