@@ -71,6 +71,13 @@ class FindPlaceScreen extends Component {
         25,
         'white',
       ),
+      Icon.getImageSource(
+        Platform.OS === 'android'
+          ? 'md-arrow-round-back'
+          : 'ios-arrow-round-back',
+        25,
+        'white',
+      ),
     ]).then(icon => {
       Navigation.push(this.props.componentId, {
         component: {
@@ -83,6 +90,12 @@ class FindPlaceScreen extends Component {
               title: {
                 text: selPlace.name,
               },
+              leftButtons: [
+                {
+                  id: 'backPress',
+                  icon: icon[1],
+                },
+              ],
               rightButtons: [
                 {
                   id: 'delete',

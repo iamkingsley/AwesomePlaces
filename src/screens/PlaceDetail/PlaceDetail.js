@@ -1,5 +1,12 @@
 import React, {Component} from 'react';
-import {View, Image, Text, StyleSheet, Dimensions} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  Dimensions,
+  BackHandler,
+} from 'react-native';
 import {connect} from 'react-redux';
 
 import {deletePlace} from '../../store/actions/index';
@@ -24,6 +31,7 @@ class PlaceDetail extends Component {
 
   componentDidMount() {
     this.navigationEventListener = Navigation.events().bindComponent(this);
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
 
     MapboxGL.requestAndroidLocationPermissions().then(ok => {
       MapboxGL.locationManager.start();
@@ -31,15 +39,28 @@ class PlaceDetail extends Component {
   }
 
   navigationButtonPressed = ({buttonId}) => {
-    if (buttonId === 'delete') {
-      this.props.onDeletePlace(this.props.selectedPlace.key);
-      Navigation.pop(this.props.componentId);
+    switch (buttonId) {
+      case 'delete': {
+        this.props.onDeletePlace(this.props.selectedPlace.key);
+        Navigation.pop(this.props.componentId);
+        break;
+      }
+      case 'backPress': {
+        this.handleBackPress();
+        break;
+      }
     }
+  };
+
+  handleBackPress = () => {
+    Navigation.pop(this.props.componentId); // Go back if required
+    return true; // Stop app from closing
   };
 
   componentWillUnmount() {
     Dimensions.removeEventListener('change', this.updateStyles);
     MapboxGL.locationManager.dispose();
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress);
   }
 
   updateStyles = dims => {
