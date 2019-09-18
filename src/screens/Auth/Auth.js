@@ -18,6 +18,7 @@ import ButtonWithBackground from '../../components/UI/ButtonWithBackground/Butto
 import backgroundImage from '../../assets/background.jpg';
 import validate from '../../utility/validation';
 import {tryAuth} from '../../store/actions/index';
+import Colors from '../../constants/Colors';
 
 class AuthScreen extends Component {
   state = {
@@ -165,7 +166,7 @@ class AuthScreen extends Component {
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           {headingText}
           <ButtonWithBackground
-            color="#29aaf4"
+            color={Colors.primary}
             onPress={this.switchAuthModeHandler}>
             Switch to {this.state.authMode === 'login' ? 'Sign Up' : 'Login'}
           </ButtonWithBackground>
@@ -211,7 +212,7 @@ class AuthScreen extends Component {
             </View>
           </TouchableWithoutFeedback>
           <ButtonWithBackground
-            color="#29aaf4"
+            color={Colors.primary}
             onPress={this.loginHandler}
             disabled={
               (!this.state.controls.confirmPassword.valid &&
