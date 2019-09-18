@@ -3,6 +3,12 @@ import Colors from '../../constants/Colors';
 
 const goToAuthScreen = () => {
   Navigation.setDefaultOptions({
+    statusBar: {
+      visible: true,
+      style: 'light',
+      backgroundColor: Colors.statusBar,
+      translucent: false,
+    },
     topBar: {
       title: {
         fontSize: 19,
