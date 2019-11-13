@@ -21,12 +21,23 @@ class FindPlaceScreen extends Component {
 
   navigationButtonPressed = ({buttonId}) => {
     const {componentId} = this.props;
+    const profileInfo = [
+      'Bernard',
+      'Codjoe',
+      require('../../assets/beautiful-place.jpg'),
+    ];
 
     if (buttonId === 'sideMenu') {
       Navigation.mergeOptions(componentId, {
         sideMenu: {
           left: {
             visible: true,
+            component: {
+              passProps: {
+                index: 0,
+                profileInfo: profileInfo,
+              },
+            },
           },
         },
       });
