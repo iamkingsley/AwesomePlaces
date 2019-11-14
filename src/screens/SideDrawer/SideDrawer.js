@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {View, Dimensions, StyleSheet, Platform} from 'react-native';
 
+import {connect} from 'react-redux';
+
 import goToAuthScreen from '../GoToAuthScreen/goToAuthScreen';
 import DrawerItem from './DrawerItem';
 import DrawerProfile from './DrawerProfile';
@@ -19,21 +21,19 @@ class SideDrawer extends Component {
   };
 
   render() {
-    const {index, profileInfo} = this.props;
-    const {...rest} = profileInfo;
     return (
       <View
         style={[
           styles.container,
           {width: Dimensions.get('window').width * 0.8},
         ]}>
-        <DrawerProfile size="large" title="BC" {...rest} />
+        <DrawerProfile size="large" title="BC" email={this.props.email} />
 
         <DrawerItem
           onPress={this.onSignOut}
           icon={Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'}
           text="Sign Out"
-          isActive={this.state.activeTabIndex === index}
+          // isActive={this.state.activeTabIndex === index}
         />
       </View>
     );
@@ -56,4 +56,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SideDrawer;
+const mapStateToProps = state => {
+  return {
+    email: state.auth.email,
+  };
+};
+
+export default connect(mapStateToProps)(SideDrawer);

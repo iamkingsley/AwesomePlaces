@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 
-import startMainTabs from '../MainTabs/startMainTabs';
+import {pushTabScreen} from '../../navigation';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
 import ButtonWithBackground from '../../components/UI/ButtonWithBackground/ButtonWithBackground';
 import backgroundImage from '../../assets/background.jpg';
-import validate from '../../utility/validation';
-import {tryAuth} from '../../store/actions/index';
+import {validate} from '../../utility';
+import {TRY_LOGIN} from '../../store/actionTypes';
 import Colors from '../../constants/Colors';
 
 class AuthScreen extends Component {
@@ -76,12 +76,11 @@ class AuthScreen extends Component {
   };
 
   loginHandler = () => {
-    const authData = {
-      email: this.state.controls.email.value,
-      password: this.state.controls.password.value,
-    };
-    this.props.onLogin(authData);
-    startMainTabs();
+    const email = this.state.controls.email.value;
+    const password = this.state.controls.password.value;
+    this.props.onLogin(email, password);
+
+    pushTabScreen();
   };
 
   updateInputState = (key, value) => {
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogin: authData => dispatch(tryAuth(authData)),
+    onLogin: (email, password) => dispatch({type: TRY_LOGIN, email, password}),
   };
 };
 

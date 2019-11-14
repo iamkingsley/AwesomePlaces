@@ -1,4 +1,4 @@
-import {ADD_PLACE, DELETE_PLACE} from '../actions/actionTypes';
+import {ADD_PLACE_SUCCESS, DELETE_PLACE_SUCCESS} from '../actionTypes';
 
 const initialState = {
   places: [],
@@ -6,7 +6,7 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_PLACE:
+    case ADD_PLACE_SUCCESS:
       return {
         ...state,
         places: state.places.concat({
@@ -18,7 +18,7 @@ const reducer = (state = initialState, action) => {
           },
         }),
       };
-    case DELETE_PLACE:
+    case DELETE_PLACE_SUCCESS:
       return {
         ...state,
         places: state.places.filter(place => {

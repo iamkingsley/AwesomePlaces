@@ -3,7 +3,7 @@ import {View, Button, StyleSheet, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import {Navigation} from 'react-native-navigation';
 
-import {addPlace} from '../../store/actions/index';
+import {ADD_PLACE} from '../../store/actionTypes';
 import PlaceInput from '../../components/PlaceInput/PlaceInput';
 import MainText from '../../components/UI/MainText/MainText';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => {
   return {
     onAddPlace: (placeName, location, image) =>
-      dispatch(addPlace(placeName, location, image)),
+      dispatch({type: ADD_PLACE, placeName, location, image}),
   };
 };
 

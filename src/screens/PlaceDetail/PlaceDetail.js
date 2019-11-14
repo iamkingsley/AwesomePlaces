@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {connect} from 'react-redux';
 
-import {deletePlace} from '../../store/actions/index';
+import {DELETE_PLACE} from '../../store/actionTypes';
 
 import {Navigation} from 'react-native-navigation';
 
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onDeletePlace: key => dispatch(deletePlace(key)),
+    onDeletePlace: key => dispatch({type: DELETE_PLACE, key}),
   };
 };
 

@@ -1,19 +1,23 @@
-import {createStore, combineReducers, compose} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import {createLogger} from 'redux-logger';
+import createSagaMiddleware from 'redux-saga';
 
-import placesReducer from './reducers/places';
+// Imports: Redux Root Reducer
+import rootReducer from './reducers';
+// Imports: Redux Root Saga
+import rootSaga from './sagas';
 
-const rootReducer = combineReducers({
-  places: placesReducer,
-});
-
-let composeEnhancers = compose;
-
-if (__DEV__) {
-  composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-}
+// Middleware: Redux Saga
+const sagaMiddleware = createSagaMiddleware();
 
 const configureStore = () => {
-  return createStore(rootReducer, composeEnhancers());
+  const store = createStore(
+    rootReducer,
+    applyMiddleware(sagaMiddleware, createLogger()),
+  );
+  // Middleware: Redux Saga
+  sagaMiddleware.run(rootSaga);
+  return store;
 };
 
 export default configureStore;

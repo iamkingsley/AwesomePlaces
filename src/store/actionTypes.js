@@ -1,0 +1,7 @@
+export const ADD_PLACE = 'ADD_PLACE';
+export const ADD_PLACE_SUCCESS = 'ADD_PLACE_SUCCESS';
+export const DELETE_PLACE = 'DELETE_PLACE';
+export const DELETE_PLACE_SUCCESS = 'DELETE_PLACE_SUCCESS';
+
+export const TRY_LOGIN = 'TRY_LOGIN';
+export const TRY_LOGIN_SUCCESS = 'TRY_LOGIN_SUCCESS';

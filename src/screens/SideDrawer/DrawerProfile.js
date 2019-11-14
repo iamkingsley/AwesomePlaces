@@ -6,7 +6,7 @@ import {StyleSheet} from 'react-native';
 import Colors from '../../constants/Colors';
 
 const DrawerProfile = props => {
-  const {source, containerStyle} = props;
+  const {source, containerStyle, email} = props;
   const iconProps = source
     ? {source: source}
     : {icon: {name: 'account-circle'}};
@@ -21,8 +21,8 @@ const DrawerProfile = props => {
         {...iconProps}
       />
       <Text style={styles.nameText}>
-        {/* {props.firstName} {props.lastName} */}
-        Bernard Codjoe
+        {/* Bernard Codjoe */}
+        {email}
       </Text>
     </View>
   );
