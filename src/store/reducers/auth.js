@@ -1,4 +1,4 @@
-import {TRY_LOGIN_SUCCESS} from '../actionTypes';
+import {TRY_LOGIN_SUCCESS, LOGOUT_SUCCESS} from '../actionTypes';
 
 const initialState = {
   authenticated: false,
@@ -12,6 +12,12 @@ const reducer = (state = initialState, action) => {
         ...state,
         authenticated: true,
         email: action.email,
+      };
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        authenticated: false,
+        email: '',
       };
     default:
       return state;

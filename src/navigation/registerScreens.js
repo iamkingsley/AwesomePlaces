@@ -1,9 +1,11 @@
 // @flow
 
+import React from 'react';
+import {Provider} from 'react-redux';
+
 import {Navigation} from 'react-native-navigation';
 
 import configureStore from '../store/configureStore';
-import withReduxStoreWrapper from './withReduxStoreWrapper';
 
 // Configure the Redux Store
 const store = configureStore();
@@ -14,6 +16,7 @@ import {
   SharePlaceScreen,
   FindPlaceScreen,
   SideDrawer,
+  Settings,
 } from '../screens';
 
 import {
@@ -22,7 +25,15 @@ import {
   PLACE_DETAIL_SCREEN,
   SHARE_PLACE_SCREEN,
   FIND_PLACE_SCREEN,
+  SETTINGS_SCREEN,
 } from './Screens';
+
+// Create Redux Wrapper
+const withReduxStoreWrapper = (ReduxScreen, reduxStore) => () => props => (
+  <Provider store={reduxStore}>
+    <ReduxScreen {...props} />
+  </Provider>
+);
 
 // Register Screens
 export default function() {
@@ -30,6 +41,7 @@ export default function() {
     SIDE_DRAWER,
     withReduxStoreWrapper(SideDrawer, store),
   );
+  Navigation.registerComponent(SETTINGS_SCREEN, () => Settings);
   Navigation.registerComponent(
     AUTH_SCREEN,
     withReduxStoreWrapper(AuthScreen, store),

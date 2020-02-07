@@ -20,10 +20,7 @@ const DrawerProfile = props => {
         containerStyle={styles.avatar}
         {...iconProps}
       />
-      <Text style={styles.nameText}>
-        {/* Bernard Codjoe */}
-        {email}
-      </Text>
+      <Text style={styles.nameText}>{email}</Text>
     </View>
   );
 };

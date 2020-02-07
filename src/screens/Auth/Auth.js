@@ -7,10 +7,10 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from 'react-native';
 import {connect} from 'react-redux';
 
-import {pushTabScreen} from '../../navigation';
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import HeadingText from '../../components/UI/HeadingText/HeadingText';
 import MainText from '../../components/UI/MainText/MainText';
@@ -79,8 +79,6 @@ class AuthScreen extends Component {
     const email = this.state.controls.email.value;
     const password = this.state.controls.password.value;
     this.props.onLogin(email, password);
-
-    pushTabScreen();
   };
 
   updateInputState = (key, value) => {
@@ -160,68 +158,71 @@ class AuthScreen extends Component {
         </View>
       );
     }
-    return (
-      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
-        <KeyboardAvoidingView style={styles.container} behavior="padding">
-          {headingText}
-          <ButtonWithBackground
-            color={Colors.primary}
-            onPress={this.switchAuthModeHandler}>
-            Switch to {this.state.authMode === 'login' ? 'Sign Up' : 'Login'}
-          </ButtonWithBackground>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.inputContainer}>
-              <DefaultInput
-                placeholder="Your E-Mail Address"
-                style={styles.input}
-                value={this.state.controls.email.value}
-                onChangeText={val => this.updateInputState('email', val)}
-                valid={this.state.controls.email.valid}
-                touched={this.state.controls.email.touched}
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-              />
+    const form = (
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        {headingText}
+        <ButtonWithBackground
+          color={Colors.primary}
+          onPress={this.switchAuthModeHandler}>
+          Switch to {this.state.authMode === 'login' ? 'Sign Up' : 'Login'}
+        </ButtonWithBackground>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.inputContainer}>
+            <DefaultInput
+              placeholder="Your E-Mail Address"
+              style={styles.input}
+              value={this.state.controls.email.value}
+              onChangeText={val => this.updateInputState('email', val)}
+              valid={this.state.controls.email.valid}
+              touched={this.state.controls.email.touched}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+            />
+            <View
+              style={
+                this.state.viewMode === 'portrait' ||
+                this.state.authMode === 'login'
+                  ? styles.portraitPasswordContainer
+                  : styles.landscapePasswordContainer
+              }>
               <View
                 style={
                   this.state.viewMode === 'portrait' ||
                   this.state.authMode === 'login'
-                    ? styles.portraitPasswordContainer
-                    : styles.landscapePasswordContainer
+                    ? styles.portraitPasswordWrapper
+                    : styles.landscapePasswordWrapper
                 }>
-                <View
-                  style={
-                    this.state.viewMode === 'portrait' ||
-                    this.state.authMode === 'login'
-                      ? styles.portraitPasswordWrapper
-                      : styles.landscapePasswordWrapper
-                  }>
-                  <DefaultInput
-                    placeholder="Password"
-                    style={styles.input}
-                    value={this.state.controls.password.value}
-                    onChangeText={val => this.updateInputState('password', val)}
-                    valid={this.state.controls.password.valid}
-                    touched={this.state.controls.password.touched}
-                    secureTextEntry
-                  />
-                </View>
-                {confirmPasswordControl}
+                <DefaultInput
+                  placeholder="Password"
+                  style={styles.input}
+                  value={this.state.controls.password.value}
+                  onChangeText={val => this.updateInputState('password', val)}
+                  valid={this.state.controls.password.valid}
+                  touched={this.state.controls.password.touched}
+                  secureTextEntry
+                />
               </View>
+              {confirmPasswordControl}
             </View>
-          </TouchableWithoutFeedback>
-          <ButtonWithBackground
-            color={Colors.primary}
-            onPress={this.loginHandler}
-            disabled={
-              (!this.state.controls.confirmPassword.valid &&
-                this.state.authMode === 'signup') ||
-              !this.state.controls.email.valid ||
-              !this.state.controls.password.valid
-            }>
-            Submit
-          </ButtonWithBackground>
-        </KeyboardAvoidingView>
+          </View>
+        </TouchableWithoutFeedback>
+        <ButtonWithBackground
+          color={Colors.primary}
+          onPress={this.loginHandler}
+          disabled={
+            (!this.state.controls.confirmPassword.valid &&
+              this.state.authMode === 'signup') ||
+            !this.state.controls.email.valid ||
+            !this.state.controls.password.valid
+          }>
+          Submit
+        </ButtonWithBackground>
+      </KeyboardAvoidingView>
+    );
+    return (
+      <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
+        {this.props.loading ? <ActivityIndicator /> : form}
       </ImageBackground>
     );
   }
@@ -260,6 +261,11 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => {
+  return {
+    loading: state.app.loading,
+  };
+};
 const mapDispatchToProps = dispatch => {
   return {
     onLogin: (email, password) => dispatch({type: TRY_LOGIN, email, password}),
@@ -267,6 +273,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(AuthScreen);

@@ -13,19 +13,36 @@ import {connect} from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import PlaceList from '../../components/PlaceList/PlaceList';
+import {PLACE_DETAIL_SCREEN} from '../../navigation/Screens';
+import {SET_SELECTED_TAB} from '../../store/actionTypes';
 
 class FindPlaceScreen extends Component {
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+  componentDidMount() {
+    const {componentId} = this.props;
+    Navigation.mergeOptions(componentId, {
+      sideMenu: {
+        left: {
+          visible: false,
+        },
+      },
+      bottomTabs: {
+        visible: true,
+      },
+    });
+
+    Navigation.events().registerBottomTabSelectedListener(
+      ({selectedTabIndex, unselectedTabIndex}) => {
+        this.props.selectTab(componentId);
+      },
+    );
   }
 
   navigationButtonPressed = ({buttonId}) => {
     const {componentId} = this.props;
-    const profileInfo = [
-      'Bernard',
-      'Codjoe',
-      require('../../assets/beautiful-place.jpg'),
-    ];
 
     if (buttonId === 'sideMenu') {
       Navigation.mergeOptions(componentId, {
@@ -35,7 +52,6 @@ class FindPlaceScreen extends Component {
             component: {
               passProps: {
                 index: 0,
-                profileInfo: profileInfo,
               },
             },
           },
@@ -72,7 +88,7 @@ class FindPlaceScreen extends Component {
   };
 
   itemSelectedHandler = key => {
-    const selPlace = this.props.places.find(place => {
+    const selectedPlace = this.props.places.find(place => {
       return place.key === key;
     });
 
@@ -90,14 +106,14 @@ class FindPlaceScreen extends Component {
     ]).then(icon => {
       Navigation.push(this.props.componentId, {
         component: {
-          name: 'awesome-places.PlaceDetailScreen',
+          name: PLACE_DETAIL_SCREEN,
           passProps: {
-            selectedPlace: selPlace,
+            selectedPlace: selectedPlace,
           },
           options: {
             topBar: {
               title: {
-                text: selPlace.name,
+                text: selectedPlace.name,
               },
               leftButtons: [
                 {
@@ -184,5 +200,13 @@ const mapStateToProps = state => {
     places: state.places.places,
   };
 };
+const mapDispatchToProps = dispatch => {
+  return {
+    selectTab: componentId => dispatch({type: SET_SELECTED_TAB, componentId}),
+  };
+};
 
-export default connect(mapStateToProps)(FindPlaceScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(FindPlaceScreen);

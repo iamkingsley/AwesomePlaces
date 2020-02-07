@@ -12,7 +12,7 @@ import Colors from '../../constants/Colors';
 
 const item = props => {
   const content = (
-    <View style={styles.drawerItem}>
+    <View style={[styles.drawerItem, props.active]}>
       <Icon
         name={props.icon}
         size={25}

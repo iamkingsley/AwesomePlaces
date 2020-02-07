@@ -3,6 +3,8 @@ import {takeLatest, put} from 'redux-saga/effects';
 import {
   ADD_PLACE,
   ADD_PLACE_SUCCESS,
+  SET_SELECTED_TAB,
+  SET_SELECTED_TAB_SUCCESS,
   DELETE_PLACE,
   DELETE_PLACE_SUCCESS,
 } from '../actionTypes';
@@ -45,4 +47,20 @@ function* deletePlace(action) {
 export function* watchDeletePlace() {
   // Take Last Action
   yield takeLatest(DELETE_PLACE, deletePlace);
+}
+
+function* setSelectedTabComp(action) {
+  try {
+    // Dispatch Action To Redux Store
+    yield put({
+      type: SET_SELECTED_TAB_SUCCESS,
+      componentId: action.componentId,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* watchSelectedTabComp() {
+  yield takeLatest(SET_SELECTED_TAB, setSelectedTabComp);
 }

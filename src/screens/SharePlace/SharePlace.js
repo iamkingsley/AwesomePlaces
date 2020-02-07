@@ -11,6 +11,7 @@ import PickImage from '../../components/PickImage/PickImage';
 import PickLocation from '../../components/PickLocation/PickLocation';
 import validate from '../../utility/validation';
 
+import {SET_SELECTED_TAB} from '../../store/actionTypes';
 class SharePlaceScreen extends Component {
   state = {
     controls: {
@@ -37,10 +38,25 @@ class SharePlaceScreen extends Component {
     super(props);
     this.navigationEventListener = Navigation.events().bindComponent(this);
   }
+  componentDidMount() {
+    const {componentId} = this.props;
+    Navigation.mergeOptions(componentId, {
+      sideMenu: {
+        left: {
+          visible: false,
+        },
+      },
+    });
+
+    Navigation.events().registerBottomTabSelectedListener(
+      ({selectedTabIndex, unselectedTabIndex}) => {
+        this.props.selectTab(componentId);
+      },
+    );
+  }
 
   navigationButtonPressed = ({buttonId}) => {
     const {componentId} = this.props;
-
     if (buttonId === 'sideMenu') {
       Navigation.mergeOptions(componentId, {
         sideMenu: {
@@ -159,6 +175,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onAddPlace: (placeName, location, image) =>
       dispatch({type: ADD_PLACE, placeName, location, image}),
+    selectTab: componentId => dispatch({type: SET_SELECTED_TAB, componentId}),
   };
 };
 

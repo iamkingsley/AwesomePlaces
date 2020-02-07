@@ -1,2 +1,2 @@
 export * from './Screens';
-export {pushAuthScreen, pushTabScreen} from './Navigation';
+export {pushAuthScreen, pushTabScreen, pushSettingsScreen} from './Navigation';
