@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {View, Dimensions, StyleSheet, Platform} from 'react-native';
 import {Navigation} from 'react-native-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import {connect} from 'react-redux';
 import {LOGOUT} from '../../store/actionTypes';
@@ -14,136 +13,55 @@ import {
   FIND_PLACE_SCREEN,
   SHARE_PLACE_SCREEN,
 } from '../../navigation/Screens';
-
 import Colors from '../../constants/Colors';
 
 class SideDrawer extends Component {
   state = {
-    activePage: 'home',
+    activeComponentId: null,
   };
 
   constructor(props) {
     super(props);
+    // Listen for Tab switch
+    Navigation.events().registerComponentDidAppearListener(({componentId}) => {
+      // only spy on tabs, we don't need other screens
+      if (
+        componentId === FIND_PLACE_SCREEN ||
+        componentId === SHARE_PLACE_SCREEN
+      ) {
+        this.setState({
+          activeComponentId: componentId,
+        });
+      }
+    });
   }
 
   onSignOut = () => {
     this.props.onLogout();
   };
 
-  onHomeClick() {
-    // Navigation.setStackRoot('root', [
-    //   {
-    //     component: {
-    //       id: FIND_PLACE_SCREEN,
-    //       name: FIND_PLACE_SCREEN,
-    //       options: {
-    //         bottomTab: {
-    //           text: 'Find a place',
-    //           icon: Icon.getImageSource(
-    //             Platform.OS === 'android' ? 'md-share-alt' : 'ios-share-alt',
-    //             25,
-    //             Colors.primary,
-    //           ),
-    //         },
-    //         topBar: {
-    //           title: {
-    //             text: 'Find a Place',
-    //           },
-    //           leftButtons: [
-    //             {
-    //               id: 'sideMenu',
-    //               icon: Icon.getImageSource(
-    //                 Platform.OS === 'android'
-    //                   ? 'md-share-alt'
-    //                   : 'ios-share-alt',
-    //                 25,
-    //                 Colors.primary,
-    //               ),
-    //             },
-    //           ],
-    //         },
-    //       },
-    //     },
-    //   },
-    //   {
-    //     component: {
-    //       id: SHARE_PLACE_SCREEN,
-    //       name: SHARE_PLACE_SCREEN,
-    //       options: {
-    //         bottomTab: {
-    //           text: 'Share a place',
-    //           icon: Icon.getImageSource(
-    //             Platform.OS === 'android' ? 'md-search' : 'ios-search',
-    //             25,
-    //             'white',
-    //           ),
-    //         },
-    //         topBar: {
-    //           title: {
-    //             text: 'Share a Place',
-    //           },
-    //           leftButtons: [
-    //             {
-    //               id: 'sideMenu',
-    //               icon: Icon.getImageSource(
-    //                 Platform.OS === 'android'
-    //                   ? 'md-share-alt'
-    //                   : 'ios-share-alt',
-    //                 25,
-    //                 'white',
-    //               ),
-    //             },
-    //           ],
-    //         },
-    //       },
-    //     },
-    //   },
-    // ]);
-
+  onHomeClick = () => {
     Navigation.mergeOptions('BottomTabsId', {
       bottomTabs: {
-        currentTabIndex: 1,
+        currentTabIndex: 0,
       },
     });
-  }
-  onSettingsClick() {
-    // Navigation.setStackRoot('root', {
-    //   component: {
-    //     id: SETTINGS_SCREEN,
-    //     name: SETTINGS_SCREEN,
-    //     options: {
-    //       topBar: {
-    //         title: {
-    //           text: 'Settings',
-    //         },
-    //         leftButtons: [
-    //           {
-    //             id: 'sideMenu',
-    //             icon: Icon.getImageSource(
-    //               Platform.OS === 'android' ? 'md-menu' : 'ios-menu',
-    //               25,
-    //               'white',
-    //             ),
-    //           },
-    //         ],
-    //       },
-    //     },
-    //   },
-    // });
-
-    // Navigation.mergeOptions('root', {
-    //   component: {
-    //     name: SETTINGS_SCREEN,
-    //   },
-    // });
-
-    Navigation.push(this.props.componentId, {
+  };
+  onSettingsClick = () => {
+    Navigation.push(this.state.activeComponentId, {
       component: {
         id: SETTINGS_SCREEN,
         name: SETTINGS_SCREEN,
+        options: {
+          topBar: {
+            title: {
+              text: 'Settings',
+            },
+          },
+        },
       },
     });
-  }
+  };
 
   render() {
     return (
@@ -158,13 +76,18 @@ class SideDrawer extends Component {
           onPress={this.onHomeClick}
           icon={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
           text="Home"
-          active={this.state.activePage === 'home' ? styles.active : null}
+          active={
+            this.state.activeComponentId === FIND_PLACE_SCREEN ||
+            this.state.activeComponentId === SHARE_PLACE_SCREEN
+              ? styles.active
+              : null
+          }
         />
         <DrawerItem
           onPress={this.onSettingsClick}
           icon={Platform.OS === 'android' ? 'md-settings' : 'ios-settings'}
           text="Settings"
-          active={this.state.activePage === 'settings' ? styles.active : null}
+          active={null}
         />
         <DrawerItem
           onPress={this.onSignOut}
@@ -182,13 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   active: {
-    backgroundColor: '#999',
-  },
-  divider: {
-    alignSelf: 'center',
-    backgroundColor: 'rgba(50,50,50,1)',
-    width: '70%',
-    marginVertical: 20,
+    color: Colors.primary,
   },
 });
 

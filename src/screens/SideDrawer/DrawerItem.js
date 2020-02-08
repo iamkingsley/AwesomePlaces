@@ -12,14 +12,14 @@ import Colors from '../../constants/Colors';
 
 const item = props => {
   const content = (
-    <View style={[styles.drawerItem, props.active]}>
+    <View style={[styles.drawerItem]}>
       <Icon
         name={props.icon}
         size={25}
-        color={Colors.silva}
+        color={props.active != null ? Colors.primary : Colors.silva}
         style={styles.drawerItemIcon}
       />
-      <Text style={styles.text}>{props.text}</Text>
+      <Text style={[styles.text, props.active]}>{props.text}</Text>
     </View>
   );
 

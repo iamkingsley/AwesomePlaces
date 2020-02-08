@@ -30,87 +30,89 @@ export const pushTabScreen = () => {
       Colors.primary,
     ),
     Icon.getImageSource(
-      Platform.OS === 'android' ? 'md-more' : 'ios-more',
+      Platform.OS === 'android' ? 'md-menu' : 'ios-menu',
       25,
       'white',
     ),
   ]).then(sources => {
     Navigation.setRoot({
       root: {
-        stack: {
-          id: 'root',
-          children: [
-            {
-              bottomTabs: {
-                id: 'BottomTabsId',
-                children: [
-                  {
-                    stack: {
-                      children: [
-                        {
-                          component: {
-                            id: FIND_PLACE_SCREEN,
-                            name: FIND_PLACE_SCREEN,
-                            options: {
-                              bottomTab: {
-                                text: 'Find a place',
-                                icon: sources[0],
+        sideMenu: {
+          left: {
+            component: {
+              name: SIDE_DRAWER,
+            },
+          },
+          center: {
+            bottomTabs: {
+              id: 'BottomTabsId',
+              children: [
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          id: FIND_PLACE_SCREEN,
+                          name: FIND_PLACE_SCREEN,
+                          options: {
+                            bottomTab: {
+                              text: 'Find a place',
+                              icon: sources[0],
+                            },
+                            topBar: {
+                              title: {
+                                text: 'Find a Place',
                               },
-                              topBar: {
-                                title: {
-                                  text: 'Find a Place',
+                              leftButtons: [
+                                {
+                                  id: 'sideMenu',
+                                  icon: sources[2],
                                 },
-                                rightButtons: [
-                                  {
-                                    id: 'more',
-                                    icon: sources[2],
-                                  },
-                                ],
-                              },
+                              ],
                             },
                           },
                         },
-                      ],
-                    },
+                      },
+                    ],
                   },
-                  {
-                    stack: {
-                      children: [
-                        {
-                          component: {
-                            id: SHARE_PLACE_SCREEN,
-                            name: SHARE_PLACE_SCREEN,
-                            options: {
-                              bottomTab: {
-                                text: 'Share a place',
-                                icon: sources[1],
+                },
+                {
+                  stack: {
+                    children: [
+                      {
+                        component: {
+                          id: SHARE_PLACE_SCREEN,
+                          name: SHARE_PLACE_SCREEN,
+                          options: {
+                            bottomTab: {
+                              text: 'Share a place',
+                              icon: sources[1],
+                            },
+                            topBar: {
+                              title: {
+                                text: 'Share a Place',
                               },
-                              topBar: {
-                                title: {
-                                  text: 'Share a Place',
+                              leftButtons: [
+                                {
+                                  id: 'sideMenu',
+                                  icon: sources[2],
                                 },
-                                rightButtons: [
-                                  {
-                                    id: 'more',
-                                    icon: sources[2],
-                                  },
-                                ],
-                              },
+                              ],
                             },
                           },
                         },
-                      ],
-                    },
+                      },
+                    ],
                   },
-                ],
-                options: {
-                  bottomTabs: {
-                    visible: true,
-                  },
+                },
+              ],
+              options: {
+                bottomTabs: {
+                  visible: true,
                 },
               },
             },
-          ],
+          },
         },
       },
     });
